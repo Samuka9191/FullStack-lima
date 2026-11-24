@@ -1,6 +1,6 @@
 const db = require('../config/database');
 
-const produtoModel = {
+const ProdutoModel = {
     async listarTodos() {
         const [linhas] = await db.query(
             'SELECT id, nome, preco, criado_em FROM produtos ORDER BY id DESC'
@@ -23,5 +23,25 @@ const produtoModel = {
             [nome, descricao || null, preco]
         )
         return resultado.insertId;
+    },
+
+    async atualizar(id, produto){
+        const { nome, descricao, preco } = produto
+        const [resultado] = await db.query(
+            'UPDATE produtos SET nome = ?, descricao = ?, preco = ?, id = ?',
+            [nome, descricao || null, preco, id]
+
+        )
+        return resultado.affectedRows;
+    },
+
+    async excluir(id) {
+        const [resultado] = await db.query (
+            'DELETE FROM produtos'
+            [id]
+        );
+        return resultado.affectedRows
     }
-}
+};
+
+module.exports = ProdutoModel;
