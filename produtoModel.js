@@ -14,5 +14,14 @@ const produtoModel = {
             [id]
         );
         return linhas[0]
+    },
+
+    async criar(produto){
+        const { nome, descricao, preco} = produto;
+        const [resultado] = await db.query (
+            'INSERT INTO produtos (nome, descricao, preco) VALUES (?, ?, ?)',
+            [nome, descricao || null, preco]
+        )
+        return resultado.insertId;
     }
 }
